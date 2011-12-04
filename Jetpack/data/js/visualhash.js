@@ -1,4 +1,4 @@
-function visualHash() {
+(function () {
     // var lastBlur = null;
     var inputElements = document.getElementsByTagName('input');
     for (var input in inputElements) {
@@ -33,16 +33,13 @@ function visualHash() {
         }
         
         // TODO: find if there's another way of keeping track of typed updates.
-        passwordElem.onkeydown = function() { 
+        passwordElem.addEventListener('keydown', function() { 
             setTimeout(function() {
                 updateVisualHash(passwordElem)
             },10);
-
-            if (oldKeyDown)
-                oldKeyDown.apply(this,arguments);
-        };
-        var oldFocus = passwordElem.onfocus;
-        passwordElem.onfocus = function() {
+        });
+        
+        passwordElem.addEventListener('focus', function() {
 
             if (self.port)
                 self.port.emit('focus',{
@@ -50,13 +47,9 @@ function visualHash() {
                     pos: findPos(this),
                     password: this.value
                 });
+        });
 
-            if (oldFocus)
-                oldFocus.apply(this,arguments);
-        };
-
-        var oldBlur = passwordElem.onblur;
-        passwordElem.onblur = function() {
+        passwordElem.addEventListener('blur', function() {
             restoreBackgroundColor(this);
 
             window.lastBlur = passwordElem;
@@ -69,11 +62,6 @@ function visualHash() {
                     href: window.location.href,
                     password: this.value
                 });
-
-            if (oldBlur)
-                oldBlur.apply(this,arguments);
-        };
+        });
     }
-}
-
-visualHash();
+})();
