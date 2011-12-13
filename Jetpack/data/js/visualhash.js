@@ -1,11 +1,8 @@
 (function () {
-    // var lastBlur = null;
-    var inputElements = document.getElementsByTagName('input');
-    for (var input in inputElements) {
-        if (inputElements[input].type == 'password') {
-            attachHashAsYouType(inputElements[input]);
-        }
-    }
+    document.addEventListener('keydown', function(e) {
+        if (e.target && e.target.tagName == 'INPUT' && e.target.type == 'password' && !(e.target.__visualHash))
+            attachHashAsYouType(e.target);
+    })
 
     function attachHashAsYouType(passwordElem) {
         var oldBackgroundImage = passwordElem.style['backgroundImage'];
@@ -33,35 +30,18 @@
         }
         
         // TODO: find if there's another way of keeping track of typed updates.
-        passwordElem.addEventListener('keydown', function() { 
+        
+        function firstUpdate() {
             setTimeout(function() {
                 updateVisualHash(passwordElem)
             },10);
-        });
+        }
+        passwordElem.addEventListener('keydown', firstUpdate);
         
-        passwordElem.addEventListener('focus', function() {
-
-            if (self.port)
-                self.port.emit('focus',{
-                    type: 'focus',
-                    pos: findPos(this),
-                    password: this.value
-                });
-        });
-
-        passwordElem.addEventListener('blur', function() {
-            restoreBackgroundColor(this);
-
-            window.lastBlur = passwordElem;
-            if (self.port)
-                self.port.emit('blur',{
-                    type: 'blur',
-                    clientRect: passwordElem.getBoundingClientRect(),
-                    hasFocus: document.activeElement == this,
-                    host: window.location.host,
-                    href: window.location.href,
-                    password: this.value
-                });
-        });
+        // FIXME: Find a better way of marking an element as having visual hashing attached.
+        passwordElem.__visualHash = true;
+        
+        // Update for first keydown
+        firstUpdate();
     }
 })();

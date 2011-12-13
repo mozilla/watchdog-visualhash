@@ -1,11 +1,8 @@
-function visualHash() {
-    // var lastBlur = null;
-    var inputElements = document.getElementsByTagName('input');
-    for (var input in inputElements) {
-        if (inputElements[input].type == 'password') {
-            attachHashAsYouType(inputElements[input]);
-        }
-    }
+(function () {
+    document.addEventListener('keydown', function(e) {
+        if (e.target && e.target.tagName == 'INPUT' && e.target.type == 'password' && !(e.target.__visualHash))
+            attachHashAsYouType(e.target);
+    })
 
     function attachHashAsYouType(passwordElem) {
         var oldBackgroundImage = passwordElem.style['backgroundImage'];
@@ -33,47 +30,18 @@ function visualHash() {
         }
         
         // TODO: find if there's another way of keeping track of typed updates.
-        passwordElem.onkeydown = function() { 
+        
+        function firstUpdate() {
             setTimeout(function() {
                 updateVisualHash(passwordElem)
             },10);
-
-            if (oldKeyDown)
-                oldKeyDown.apply(this,arguments);
-        };
-        var oldFocus = passwordElem.onfocus;
-        passwordElem.onfocus = function() {
-
-            if (self.port)
-                self.port.emit('focus',{
-                    type: 'focus',
-                    pos: findPos(this),
-                    password: this.value
-                });
-
-            if (oldFocus)
-                oldFocus.apply(this,arguments);
-        };
-
-        var oldBlur = passwordElem.onblur;
-        passwordElem.onblur = function() {
-            restoreBackgroundColor(this);
-
-            window.lastBlur = passwordElem;
-            if (self.port)
-                self.port.emit('blur',{
-                    type: 'blur',
-                    clientRect: passwordElem.getBoundingClientRect(),
-                    hasFocus: document.activeElement == this,
-                    host: window.location.host,
-                    href: window.location.href,
-                    password: this.value
-                });
-
-            if (oldBlur)
-                oldBlur.apply(this,arguments);
-        };
+        }
+        passwordElem.addEventListener('keydown', firstUpdate);
+        
+        // FIXME: Find a better way of marking an element as having visual hashing attached.
+        passwordElem.__visualHash = true;
+        
+        // Update for first keydown
+        firstUpdate();
     }
-}
-
-visualHash();
+})();
