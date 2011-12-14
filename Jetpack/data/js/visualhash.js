@@ -1,9 +1,12 @@
 (function () {
-    document.addEventListener('keydown', function(e) {
-        if (e.target && e.target.tagName == 'INPUT' && e.target.type == 'password' && !(e.target.__visualHash))
-            attachHashAsYouType(e.target);
-    })
-
+	document.addEventListener('DOMSubtreeModified', function(e) {
+		var elements = document.getElementsByTagName('input');
+		for (var elIdx = 0; elIdx < elements.length; elIdx++) {
+	        if (elements[elIdx] && elements[elIdx].tagName == 'INPUT' && elements[elIdx].type == 'password' && !(elements[elIdx].__visualHash))
+	            attachHashAsYouType(elements[elIdx]);
+		}
+	});
+	
     function attachHashAsYouType(passwordElem) {
         var oldBackgroundImage = passwordElem.style['backgroundImage'];
         var oldBackgroundColor = passwordElem.style['backgroundColor'];
