@@ -1,9 +1,4 @@
 (function () {
-    // document.addEventListener('keydown', function(e) {
-    //     if (e.target && e.target.tagName == 'INPUT' && e.target.type == 'password' && !(e.target.__visualHash))
-    //         attachHashAsYouType(e.target);
-    // })
-	
 	document.addEventListener('DOMSubtreeModified', function(e) {
 		var elements = document.getElementsByTagName('input');
 		for (var elIdx = 0; elIdx < elements.length; elIdx++) {
