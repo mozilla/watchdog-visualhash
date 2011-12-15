@@ -1,13 +1,16 @@
 {
   "name": "Visual Hashing",
   "version": "1.0",
-  "description": "Visual hashing as you type for password <input>.",
+  "description": "Changes the background of password entry fields to a four-color visual hash.",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["util.js","visualhash.js"]
     }
   ],
+  "icons": {
+	  "128": "icon.png"
+  },
 
   "permissions": [
   ]
