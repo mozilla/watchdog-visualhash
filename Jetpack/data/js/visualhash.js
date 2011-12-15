@@ -32,19 +32,23 @@
             elem.style['backgroundImage'] = 'url(' + getDataURLForHash(passwordHash,elemWidth,elemHeight) + ')';
         }
         
-        // TODO: find if there's another way of keeping track of typed updates.
-        
-        function onKeyDown() {
+        function updateHashTimeout() {
+			// Timeout for a small amount of time (10ms) because element.value isn't updated until
+			// after keydown event raises.
+			
+	        // TODO: find if there's another way of keeping track of typed updates.
             setTimeout(function() {
                 updateVisualHash(passwordElem)
             },10);
         }
-        passwordElem.addEventListener('keydown', onKeyDown);
+        passwordElem.addEventListener('keydown', updateHashTimeout);
+		passwordElem.addEventListener('focus', updateHashTimeout);
+		passwordElem.addEventListener('blur', updateHashTimeout);
         
         // FIXME: Find a better way of marking an element as having visual hashing attached.
         passwordElem.__visualHash = true;
         
         // Update for first keydown
-        onKeyDown();
+        updateHashTimeout();
     }
 })();
