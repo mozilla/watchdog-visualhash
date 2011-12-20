@@ -2,7 +2,7 @@
     "name": "visual-hashing",
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
     "author": "Paul Sawaya",
-    "version": "0.1",
+    "version": "0.2",
     "fullName": "Visual Hashing",
     "id": "jid1-NzIEzRc5sYX4Ww",
     "description": "Changes the background of password entry fields to a four-color visual hash. Use this add-on and, over time, you'll remember your visual hash and stop mistyping your passwords!"
