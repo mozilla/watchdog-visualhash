@@ -7,7 +7,11 @@
 	            attachHashAsYouType(elements[elIdx]);
 		}
 	}	
-	document.addEventListener('DOMSubtreeModified', attachToInputs);
+  // this is far too expensive on web sites that do lots of DOM modifications
+  // document.addEventListener('DOMSubtreeModified', attachToInputs);
+
+  // instead every 4 seconds should be enough to catch inputs added using AJAX
+  window.setInterval(attachToInputs, 4000);
 	
 	attachToInputs();
 	
