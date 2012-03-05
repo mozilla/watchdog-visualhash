@@ -1,4 +1,9 @@
-(function () {
+var vhash = (function () {
+	
+	var prefs = {
+		numColorBars : 3,
+		personalSalt : ''
+	};
 
 	function attachToInputs(e) {
 		var elements = document.getElementsByTagName('input');
@@ -31,10 +36,10 @@
                 restoreBackgroundColor(elem);
                 return;
             }
-            var passwordHash = SHA1(elem.value);
+            var passwordHash = SHA1(elem.value + prefs.personalSalt);
             var elemWidth = Math.max(elem.clientWidth,elem.offsetWidth);
             var elemHeight = Math.max(elem.clientHeight,elem.offsetHeight);
-            elem.style['backgroundImage'] = 'url(' + getDataURLForHash(passwordHash,elemWidth,elemHeight) + ')';
+            elem.style['backgroundImage'] = 'url(' + getDataURLForHash(passwordHash,elemWidth,elemHeight,prefs.numColorBars) + ')';
         }
         
         function updateHashTimeout() {
@@ -56,4 +61,14 @@
         // Update for first keydown
         updateHashTimeout();
     }
+	
+	return {
+		updatePrefs: function(_prefs) {
+			prefs = _prefs;
+		}
+	};
 })();
+
+if (self && self.port) {
+	self.port.on('updatePrefs', vhash.updatePrefs);
+}

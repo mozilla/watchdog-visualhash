@@ -5,5 +5,18 @@
     "version": "0.2",
     "fullName": "Visual Hashing",
     "id": "jid1-NzIEzRc5sYX4Ww",
-    "description": "Changes the background of password entry fields to a four-color visual hash. Use this add-on and, over time, you'll remember your visual hash and stop mistyping your passwords!"
+    "description": "Changes the background of password entry fields to a four-color visual hash. Use this add-on and, over time, you'll remember your visual hash and stop mistyping your passwords!",
+	
+	"preferences": [{
+	        "name": "numColorBars",
+	        "title": "Number of color bars",
+	        "type": "integer",
+	        "value": 4
+	    },
+		{
+	        "name": "personalSalt",
+	        "title": "An optional personal \"salt\", used to keep your visual hashes unique.",
+	        "type": "string",
+			"value": ""
+	    }]
 }
